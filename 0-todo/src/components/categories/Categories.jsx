@@ -1,4 +1,26 @@
+import {useState, useEffect} from "react";
+
+function CategoryItem({category}) {
+    return (
+        <li className="list-group-item d-flex align-items-center justify-content-between">
+            <div>
+                <span className="me-2">{ category }</span>
+            </div>
+            <button className="btn btn-sm btn-danger"><i className="fa fa-trash"></i></button>
+        </li>
+    )
+}
+
 export default function Categories() {
+    const [categories, setCategories] = useState([])
+
+    function addCategory(categoryName) {
+        setCategories([
+            ...categories,
+            [categoryName]
+        ])
+    }
+
     return (
         <>
             <div className="card mb-4">
@@ -6,7 +28,7 @@ export default function Categories() {
                     Add a new category
                 </div>
                 <div className="card-body">
-                    <input type="text" className="form-control"/>
+                    <input type="text" className="form-control" onKeyPress={(e) => { e.key === 'Enter' && addCategory(e.target.value) }} />
                     <button className="btn btn-sm btn-success d-table ms-auto mt-2">Add !</button>
                 </div>
             </div>
@@ -15,14 +37,14 @@ export default function Categories() {
                     <span className="fw-bold">Categories</span>
                 </div>
                 <div className="card-body">
-                    <ul className="list-group">
-                        <li className="list-group-item d-flex align-items-center justify-content-between">
-                            <div>
-                                <span className="me-2">Category Name</span>
-                            </div>
-                            <button className="btn btn-sm btn-danger"><i className="fa fa-trash"></i></button>
-                        </li>
-                    </ul>
+                    {categories.length > 0 && (
+                        <ul className="list-group">
+                            {categories.map((category, categoryIndex) => <CategoryItem category={category} key={categoryIndex} />)}
+                        </ul>
+                    )}
+                    {categories.length === 0 && (
+                        <div className="alert bg-warning text-white mb-0">Categories are empty</div>
+                    )}
                 </div>
             </div>
         </>
