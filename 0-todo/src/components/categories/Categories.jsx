@@ -13,12 +13,15 @@ function CategoryItem({category}) {
 
 export default function Categories() {
     const [categories, setCategories] = useState([])
+    const [categoryName, setCategoryName] = useState('')
 
-    function addCategory(categoryName) {
+    function addCategory() {
         setCategories([
             ...categories,
             [categoryName]
         ])
+
+        setCategoryName('')
     }
 
     return (
@@ -28,8 +31,11 @@ export default function Categories() {
                     Add a new category
                 </div>
                 <div className="card-body">
-                    <input type="text" className="form-control" onKeyPress={(e) => { e.key === 'Enter' && addCategory(e.target.value) }} />
-                    <button className="btn btn-sm btn-success d-table ms-auto mt-2">Add !</button>
+                    <input type="text" value={categoryName} className="form-control"
+                           onKeyPress={(e) => {e.key === 'Enter' && addCategory()}}
+                           onChange={(e) => setCategoryName(e.target.value)}
+                    />
+                    <button className="btn btn-sm btn-success d-table ms-auto mt-2" onClick={addCategory}>Add !</button>
                 </div>
             </div>
             <div className="card">
