@@ -1,38 +1,50 @@
 import {useState, useEffect} from "react";
 
-function CategoryItem({category}) {
+function CategoryItem({category, removeCategory}) {
     return (
         <li className="list-group-item d-flex align-items-center justify-content-between">
             <div>
-                <span className="me-2">{ category }</span>
+                <span className="me-2">{category}</span>
             </div>
-            <button className="btn btn-sm btn-danger"><i className="fa fa-trash"></i></button>
+            <button className="btn btn-sm btn-danger" onClick={() => {
+                removeCategory(category)
+            }}><i className="fa fa-trash"></i></button>
         </li>
     )
 }
 
-export default function Categories() {
-    const [categories, setCategories] = useState([])
+export default function Categories({isVisible, categories, setCategories, setAlertMessage}) {
     const [categoryName, setCategoryName] = useState('')
 
     function addCategory() {
-        setCategories([
-            ...categories,
-            [categoryName]
-        ])
+        if (categoryName !== '') {
+            setCategories([
+                ...categories,
+                [categoryName]
+            ]);
 
-        setCategoryName('')
+            setCategoryName('')
+            setAlertMessage('')
+        } else {
+            setAlertMessage('Please fill the category caption')
+        }
+    }
+
+    function removeCategory(category) {
+        setCategories(categories.filter((item) => item !== category))
     }
 
     return (
-        <>
+        <div className={!isVisible ? 'd-none' : ''}>
             <div className="card mb-4">
                 <div className="card-header fw-bold">
                     Add a new category
                 </div>
                 <div className="card-body">
                     <input type="text" value={categoryName} className="form-control"
-                           onKeyPress={(e) => {e.key === 'Enter' && addCategory()}}
+                           onKeyPress={(e) => {
+                               e.key === 'Enter' && addCategory()
+                           }}
                            onChange={(e) => setCategoryName(e.target.value)}
                     />
                     <button className="btn btn-sm btn-success d-table ms-auto mt-2" onClick={addCategory}>Add !</button>
@@ -45,7 +57,9 @@ export default function Categories() {
                 <div className="card-body">
                     {categories.length > 0 && (
                         <ul className="list-group">
-                            {categories.map((category, categoryIndex) => <CategoryItem category={category} key={categoryIndex} />)}
+                            {categories.map((category, categoryIndex) => <CategoryItem category={category}
+                                                                                       removeCategory={removeCategory}
+                                                                                       key={categoryIndex}/>)}
                         </ul>
                     )}
                     {categories.length === 0 && (
@@ -53,6 +67,6 @@ export default function Categories() {
                     )}
                 </div>
             </div>
-        </>
+        </div>
     )
 }
