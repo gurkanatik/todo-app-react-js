@@ -74,7 +74,7 @@ export default function Todos({isVisible, todos, categories, setTodos, setAlertM
             <div className="card">
                 <div className="card-header d-flex align-items-center justify-content-between">
                     <span className="fw-bold">Todos</span>
-                    <button className="btn btn-sm btn-danger">Remove All</button>
+                    <button className="btn btn-sm btn-danger" onClick={() => {setTodos([])}}>Remove All</button>
                 </div>
                 <div className="card-body">
                     {todos.length > 0 && (
