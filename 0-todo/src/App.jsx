@@ -2,7 +2,7 @@ import {useState, useEffect} from 'react'
 import './assets/style.css';
 
 import Categories from "./components/categories/Categories.jsx";
-import Todos from "./components/todos/Todos.jsx";
+import Todos from "./components/todos/Index.jsx";
 import AlertMessage from "./components/AlertMessage";
 
 function App() {
@@ -29,6 +29,7 @@ function App() {
                     </div>
 
                     {(alertMessage && <AlertMessage message={alertMessage}/>)}
+
                     <Todos isVisible={activeTab === 'todos'}
                            categories={categories}
                            todos={todos}
