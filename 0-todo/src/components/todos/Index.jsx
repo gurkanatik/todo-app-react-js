@@ -7,14 +7,16 @@ export default function Index({isVisible, todos, categories, setTodos, setAlertM
         <div className={!isVisible ? 'd-none' : ''}>
             <AddTodo categories={categories} setTodos={setTodos} todos={todos} setAlertMessage={setAlertMessage}/>
             <Todos
-                todos={todos.filter((todoItem) => todoItem.status === false)}
+                todos={todos}
                 categories={categories}
                 setTodos={setTodos}
+                status={false}
                 caption="Remaining Todos"/>
             <Todos
-                todos={todos.filter((todoItem) => todoItem.status === true)}
+                todos={todos}
                 categories={categories}
                 setTodos={setTodos}
+                status={true}
                 caption="Completed Todos"/>
         </div>
     )

@@ -11,10 +11,6 @@ function App() {
     const [categories, setCategories] = useState(['Work', 'Home', 'School'])
     const [todos, setTodos] = useState([])
 
-    useEffect(() => {
-        console.log(todos)
-    }, [todos])
-
     return (
         <>
             <div className="container mt-4">

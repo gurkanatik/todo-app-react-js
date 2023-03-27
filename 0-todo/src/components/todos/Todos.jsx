@@ -1,13 +1,13 @@
-function TodoItem({todo, category, removeTodo, changeTodoStatus}) {
+import {useEffect} from "react";
+
+function TodoItem({todo, category, removeTodo, changeStatus}) {
     let classes = 'list-group-item d-flex align-items-center justify-content-between'
     todo.status === true ? classes += ' bg-success text-white' : ''
 
     return (
         <li className={classes}>
             <div>
-                <input className="me-2" type="checkbox" checked={todo.status} onChange={() => {
-                    changeTodoStatus(todo.id, !todo.status)
-                }}/>
+                <input className="me-2" type="checkbox" checked={todo.status} onChange={() => {changeStatus(todo.id)}}/>
                 <span className="me-2">{todo.todo}</span>
                 <span className="badge bg-primary">{category}</span>
             </div>
@@ -18,16 +18,22 @@ function TodoItem({todo, category, removeTodo, changeTodoStatus}) {
     )
 }
 
-export default function ({caption, todos, categories, setTodos}) {
-    function changeTodoStatus(id, status = 0) {
-        const newTodos = [...todos]
-        const todoToUpdate = newTodos.find((todoItem) => todoItem.id === id);
-        todoToUpdate.status = status;
-        setTodos(newTodos);
-    }
+export default function ({caption, status, todos, categories, setTodos}) {
+    const thisComponentTodos = todos.filter((todoItem) => todoItem.status === status)
 
     function removeTodo(todo) {
         setTodos(todos.filter((item) => item !== todo))
+    }
+
+    function removeAll() {
+        setTodos(todos.filter((item) => item.status !== status))
+    }
+
+    function changeStatus(id) {
+        const newTodos = [...todos]
+        newTodos.find((item) => item.id === id).status = !status
+
+        setTodos(newTodos)
     }
 
     return (
@@ -36,21 +42,23 @@ export default function ({caption, todos, categories, setTodos}) {
                 <div className="card-header d-flex align-items-center justify-content-between">
                     <span className="fw-bold">{caption}</span>
                     <button className="btn btn-sm btn-danger" onClick={() => {
-                        setTodos([])
+                        removeAll()
                     }}>Remove All
                     </button>
                 </div>
                 <div className="card-body">
-                    {todos.length > 0 && (
+                    {thisComponentTodos.length > 0 && (
                         <ul className="list-group">
-                            {todos.map((todo, todoIndex) => <TodoItem todo={todo}
-                                                                      category={categories[todo.categoryId]}
-                                                                      changeTodoStatus={changeTodoStatus}
-                                                                      removeTodo={removeTodo}
-                                                                      key={todoIndex}/>)}
+                            {thisComponentTodos.map((todo, todoIndex) =>
+                                <TodoItem todo={todo}
+                                          category={categories[todo.categoryId]}
+                                          changeStatus={changeStatus}
+                                          removeTodo={removeTodo}
+                                          key={todoIndex}/>)
+                            }
                         </ul>
                     )}
-                    {todos.length === 0 && (
+                    {thisComponentTodos.length === 0 && (
                         <div className="alert bg-warning text-white mb-0">Todos are empty</div>
                     )}
                 </div>
