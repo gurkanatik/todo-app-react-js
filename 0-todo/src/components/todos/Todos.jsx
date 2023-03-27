@@ -1,10 +1,10 @@
 import {useState} from "react";
 
-function TodoItem({todo, category, removeTodo}) {
+function TodoItem({todo, category, removeTodo, changeTodoStatus}) {
     return (
         <li className="list-group-item d-flex align-items-center justify-content-between">
             <div>
-                <input className="me-2" type="checkbox"/>
+                <input className="me-2" type="checkbox" onChange={() => {changeTodoStatus(todo.id, !todo.status)}}/>
                 <span className="me-2">{todo.todo}</span>
                 <span className="badge bg-primary">{category}</span>
             </div>
@@ -24,7 +24,7 @@ export default function Todos({isVisible, todos, categories, setTodos, setAlertM
             if (todo !== '') {
                 setTodos([
                     ...todos,
-                    {todo: todo, status: 0, categoryId: categoryId}
+                    {id: Date.now(), todo: todo, status: 0, categoryId: categoryId}
                 ])
 
                 setTodo('')
@@ -39,6 +39,11 @@ export default function Todos({isVisible, todos, categories, setTodos, setAlertM
 
     function removeTodo(todo) {
         setTodos(todos.filter((item) => item !== todo))
+    }
+
+    function changeTodoStatus(id, status = 0) {
+        todos.find((todoItem) => todoItem.id === id).status = status
+        setTodos(todos)
     }
 
     return (
@@ -81,6 +86,7 @@ export default function Todos({isVisible, todos, categories, setTodos, setAlertM
                         <ul className="list-group">
                             {todos.map((todo, todoIndex) => <TodoItem todo={todo}
                                                                       category={categories[todo.categoryId]}
+                                                                      changeTodoStatus={changeTodoStatus}
                                                                       removeTodo={removeTodo}
                                                                       key={todoIndex}/>)}
                         </ul>

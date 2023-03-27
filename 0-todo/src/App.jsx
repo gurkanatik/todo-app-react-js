@@ -8,7 +8,7 @@ import AlertMessage from "./components/AlertMessage";
 function App() {
     const [activeTab, setActiveTab] = useState('todos')
     const [alertMessage, setAlertMessage] = useState('')
-    const [categories, setCategories] = useState([])
+    const [categories, setCategories] = useState(['Work', 'Home', 'School'])
     const [todos, setTodos] = useState([])
 
     useEffect(() => {
