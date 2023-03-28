@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import {useState} from "react";
 
 function TodoItem({todo, category, removeTodo, changeStatus}) {
     let classes = 'list-group-item d-flex align-items-center justify-content-between'
@@ -21,13 +21,12 @@ function TodoItem({todo, category, removeTodo, changeStatus}) {
 }
 
 export default function ({caption, status, todos, categories, setTodos}) {
-    const [categoryId, setCategoryId] = useState('all')
-    const thisComponentTodos = todos.filter((todoItem) => {
-        if(categoryId === 'all') {
-            return todoItem.status === status
-        }
+    const [categoryId, setCategoryId] = useState(-1)
 
-        return todoItem.status === status && todoItem.categoryId === categoryId
+    const thisComponentTodos = todos.filter((item) => {
+        if (categoryId === -1) return item.status === status
+
+        return item.status === status && item.categoryId === categoryId
     })
 
     function removeTodo(todo) {
@@ -35,7 +34,11 @@ export default function ({caption, status, todos, categories, setTodos}) {
     }
 
     function removeAll() {
-        setTodos(todos.filter((item) => item.status !== status))
+        setTodos(todos.filter((item) => {
+            if (categoryId === -1) return !(item.status === status)
+
+            return !(item.status === status && item.categoryId === categoryId);
+        }))
     }
 
     function changeStatus(id) {
@@ -43,13 +46,6 @@ export default function ({caption, status, todos, categories, setTodos}) {
         newTodos.find((item) => item.id === id).status = !status
 
         setTodos(newTodos)
-    }
-
-    function filterTodos() {
-        if (categoryId === 'all') {
-            return thisComponentTodos
-        }
-        return thisComponentTodos.filter((todoItem) => todoItem.categoryId === categoryId)
     }
 
     return (
@@ -63,8 +59,9 @@ export default function ({caption, status, todos, categories, setTodos}) {
                     </button>
                 </div>
                 <div className="card-body">
-                    <select className="form-control mb-4" value={categoryId} onChange={(e) => setCategoryId(e.target.value)}>
-                        <option value="all">Show All</option>
+                    <select className="form-control mb-4" value={categoryId}
+                            onChange={(e) => setCategoryId(parseInt(e.target.value))}>
+                        <option value="-1">Show All</option>
                         {categories.map((category, categoryIndex) =>
                             <option key={categoryIndex}
                                     value={categoryIndex}>{category}</option>)}

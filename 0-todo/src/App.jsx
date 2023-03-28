@@ -7,13 +7,14 @@ import AlertMessage from "./components/AlertMessage";
 
 function App() {
     const [activeTab, setActiveTab] = useState('todos')
-    const [alertMessage, setAlertMessage] = useState('')
-    const [categories, setCategories] = useState(['Work', 'Home', 'School'])
-    const [todos, setTodos] = useState([])
-
-    useEffect(() => {
-        console.log(todos)
-    }, [todos])
+    const [alertMessage, setAlertMessage] = useState([])
+    const [categories, setCategories] = useState(['Work', 'Home', 'School', 'C1', 'C2', 'C3'])
+    const [todos, setTodos] = useState([
+        {id: 1679967443528, todo: '1', status: false, categoryId: 2},
+        {id: 1679967444721, todo: '2', status: false, categoryId: 2},
+        {id: 1679967447158, todo: '3', status: false, categoryId: 3},
+        {id: 1679967447159, todo: '4', status: true, categoryId: 3}
+    ])
 
     return (
         <>
