@@ -7,7 +7,7 @@ import AlertMessage from "./components/AlertMessage";
 
 function App() {
     const [activeTab, setActiveTab] = useState('todos')
-    const [alertMessage, setAlertMessage] = useState([])
+    const [alertMessage, setAlertMessage] = useState('')
     const [categories, setCategories] = useState(['Work', 'Home', 'School', 'C1', 'C2', 'C3'])
     const [todos, setTodos] = useState([
         {id: 1679967443528, todo: '1', status: false, categoryId: 2},
@@ -29,7 +29,7 @@ function App() {
                         </button>
                     </div>
 
-                    {(alertMessage && <AlertMessage message={alertMessage}/>)}
+                    {(alertMessage && <AlertMessage alertMessage={alertMessage} setAlertMessage={setAlertMessage}/>)}
 
                     <Todos isVisible={activeTab === 'todos'}
                            categories={categories}

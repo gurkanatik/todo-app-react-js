@@ -1,12 +1,12 @@
-import {useEffect, useState} from "react";
+import {useEffect} from "react";
 
-export default function AlertBox({message}) {
-    const [alertMessage, setAlertMessage] = useState(message)
-
+export default function AlertBox({alertMessage, setAlertMessage}) {
     useEffect(() => {
-        setTimeout(() => {
-            setAlertMessage('')
-        }, 3000)
+        if (alertMessage.length > 0) {
+            setTimeout(() => {
+                setAlertMessage('')
+            }, 3000)
+        }
     }, [alertMessage])
 
     return (
